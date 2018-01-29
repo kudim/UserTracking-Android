@@ -210,7 +210,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.");
             Snackbar snackbar = Snackbar
-                    .make(this.findViewById(R.id.btnShowLocation), "There is no permission", Snackbar.LENGTH_LONG);
+                    .make(this.findViewById(R.id.linearLayout), "There is no permission", Snackbar.LENGTH_LONG);
             snackbar.setAction("allow", new MapsActivity.MyUndoListener());
             snackbar.show();
 
@@ -236,6 +236,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        updateMap(location.getLatitude(), location.getLongitude(), false);
                     }
                 });
     }
@@ -314,7 +315,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.v("f", "ZOOM = " + zoom);
                 frCircle.setRadius(radius);
             }
-            });
+        });
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -391,32 +392,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
     }
-   public void updateMap(final double latitude, final double longitude, boolean flag) {
-       synchronized (mMap) {
-           if (flag) {
-               LatLng latLng = new LatLng(latitude, longitude);
-               frCircle.setCenter(latLng);
-               double radius = calculateCircleRadiusMeterForMapCircle(12, frCircle.getCenter().latitude, mMap.getCameraPosition().zoom);
-               frCircle.setRadius(radius);
-               this.latLngsCircle.set(1, new LatLng(latitude, longitude));
-               if (controlModeOn && myMarker != null && myMarker.getPosition() != null && calculateDistance(latitude, longitude)){
-                   frCircle.setFillColor(Color.RED);
-               }
-               else {
-                   frCircle.setFillColor(Color.BLUE);
-               }
-           }
-           else {
-               myCircle.setCenter(new LatLng(latitude, longitude));
-               double radius = calculateCircleRadiusMeterForMapCircle(12, myCircle.getCenter().latitude, mMap.getCameraPosition().zoom);
-               myCircle.setRadius(radius);
-               this.latLngsCircle.set(0, new LatLng(latitude, longitude));
-           }
-       }
-   }
+    public void updateMap(final double latitude, final double longitude, boolean flag) {
+        synchronized (mMap) {
+            if (flag) {
+                LatLng latLng = new LatLng(latitude, longitude);
+                frCircle.setCenter(latLng);
+                double radius = calculateCircleRadiusMeterForMapCircle(12, frCircle.getCenter().latitude, mMap.getCameraPosition().zoom);
+                frCircle.setRadius(radius);
+                this.latLngsCircle.set(1, new LatLng(latitude, longitude));
+                if (controlModeOn && myMarker != null && myMarker.getPosition() != null && calculateDistance(latitude, longitude)){
+                    frCircle.setFillColor(Color.RED);
+                }
+                else {
+                    frCircle.setFillColor(Color.BLUE);
+                }
+            }
+            else {
+                myCircle.setCenter(new LatLng(latitude, longitude));
+                double radius = calculateCircleRadiusMeterForMapCircle(12, myCircle.getCenter().latitude, mMap.getCameraPosition().zoom);
+                myCircle.setRadius(radius);
+                this.latLngsCircle.set(0, new LatLng(latitude, longitude));
+            }
+        }
+    }
 
     private double calculateCircleRadiusMeterForMapCircle(final int _targetRadiusDip, final double _circleCenterLatitude,
-                                                                final float _currentMapZoom) {
+                                                          final float _currentMapZoom) {
         final double arbitraryValueForDip = 156000D;
         final double oneDipDistance = Math.abs(Math.cos(Math.toRadians(_circleCenterLatitude))) * arbitraryValueForDip / Math.pow(2, _currentMapZoom);
         return oneDipDistance * (double) _targetRadiusDip;
