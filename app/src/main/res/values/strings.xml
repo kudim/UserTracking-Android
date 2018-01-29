@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">UserTracking</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_channel">Channel</string>
+    <string name="action_sign_in_share">Share</string>
+    <string name="action_sign_in_listen">Listen</string>
+    <string name="exit">Выход</string>
+    <string name="permission_denied_explanation">Hihi</string>
+    <string name="settings">haha</string>
+    <string name="permission_rationale">dklf</string>
+    <string name="add_control">Добавить контроль</string>
+    <string name="delete_control">Снять контроль</string>
+    <string name="find">Найти</string>
+</resources>
